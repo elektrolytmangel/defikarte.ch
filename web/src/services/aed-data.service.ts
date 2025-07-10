@@ -3,6 +3,22 @@ import backend from '../api/backend';
 import { AedData } from '../model/app';
 import { isOpenNow } from './opening-hours.service';
 
+export const requestAedDataById = async (id: string | number) => {
+  try {
+    const response = await backend.get<FeatureCollection>(`/v2/defibrillator/${id}`, {
+      method: 'GET',
+    });
+    if (response.status === 200) {
+      const data = await response.data;
+      return data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  return {} as FeatureCollection;
+};
+
 export const requestAedData = async (): Promise<FeatureCollection> => {
   try {
     const response = await backend.get<FeatureCollection>('/v2/defibrillator', {

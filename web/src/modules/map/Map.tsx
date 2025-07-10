@@ -31,6 +31,7 @@ import { FEATURE_STATE } from './map-instance/configuration/constants';
 import { MapConfiguration } from './map-instance/configuration/map.configuration';
 import ItemSelectInteraction from './map-instance/interactions/item-select.interaction';
 import { MapInstance } from './map-instance/map-instance';
+import { requestAedDataById } from '../../services/aed-data.service';
 
 const createFilterKey = (filter: FilterType | FilterType[]) => {
   if (Array.isArray(filter)) {
@@ -76,9 +77,13 @@ export const Map = () => {
 
   // map event handling
   const onMapEvent: MapEventCallback = useCallback(
-    event => {
+    async event => {
       if (event.type === 'item-select') {
-        setSelectedFeature(event);
+        const response = await requestAedDataById(event.data?.id || '');
+        setSelectedFeature({
+          ...event,
+          data: response.features[0] as MapGeoJSONFeature,
+        });
       }
 
       handleMapEvent(event);

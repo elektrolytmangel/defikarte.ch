@@ -1,9 +1,13 @@
 import { RasterSourceSpecification } from 'maplibre-gl';
 
-export const createOsmSource = (): RasterSourceSpecification => {
+/**
+ *
+ * Creates a raster source with given urls and a attribution for osm. If no urls are given, osm default xyz tiles are used.
+ */
+export const createOsmSource = (urls?: string[]): RasterSourceSpecification => {
   return {
     type: 'raster',
-    tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+    tiles: urls ?? ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
     tileSize: 256,
     minzoom: 0,
     maxzoom: 19,
